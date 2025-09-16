@@ -4,10 +4,10 @@ import Breadcrumbs from "@mui/joy/Breadcrumbs";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 
-import Link from "@mui/joy/Link";
 import { Stack } from "@mui/material";
 import InputTx from "../components/InputTx";
 import MainDashboard from "../components/MainDashboard";
+import { Link } from "@mui/joy";
 
 export default function MainPage() {
   return (
@@ -27,18 +27,12 @@ export default function MainPage() {
             separator={<ChevronRightRoundedIcon fontSize="small" />}
             sx={{ pl: 0 }}
           >
-            <Link
-              underline="none"
-              color="neutral"
-              href="#some-link"
-              aria-label="Home"
-            >
+            <Link underline="none" color="neutral" aria-label="Home">
               <HomeRoundedIcon />
             </Link>
             <Link
               underline="hover"
               color="neutral"
-              href="/"
               sx={{ fontSize: 12, fontWeight: 500 }}
             >
               Home

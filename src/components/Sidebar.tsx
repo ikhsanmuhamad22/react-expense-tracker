@@ -17,8 +17,11 @@ import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded
 
 import ColorSchemeToggle from "./ColorSchemeToggle";
 import { closeSidebar } from "../utils";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Sidebar() {
+  let [activeTab, setActiveTab] = useState(0);
   return (
     <Sheet
       className="Sidebar"
@@ -99,19 +102,31 @@ export default function Sidebar() {
           }}
         >
           <ListItem>
-            <ListItemButton>
+            <ListItemButton color={activeTab == 0 ? "primary" : "neutral"}>
               <HomeRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
+                <Link
+                  to={"/"}
+                  style={{ textDecoration: "none" }}
+                  onClick={() => setActiveTab(0)}
+                >
+                  <Typography level="title-sm">Home</Typography>
+                </Link>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
 
           <ListItem>
-            <ListItemButton>
+            <ListItemButton color={activeTab == 1 ? "primary" : "neutral"}>
               <DashboardRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
+                <Link
+                  to={"/analityc"}
+                  style={{ textDecoration: "none" }}
+                  onClick={() => setActiveTab(1)}
+                >
+                  <Typography level="title-sm">analityc</Typography>
+                </Link>
               </ListItemContent>
             </ListItemButton>
           </ListItem>

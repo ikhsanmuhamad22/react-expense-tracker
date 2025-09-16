@@ -4,7 +4,7 @@ import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabList from "@mui/joy/TabList";
 import Tabs from "@mui/joy/Tabs";
 import { dummyTransactions } from "../data/dummy/dummy_tx";
-import { Stack, Table, Typography } from "@mui/joy";
+import { Button, Stack, Table, Typography } from "@mui/joy";
 
 function MainDashboard() {
   return (
@@ -74,7 +74,24 @@ function MainDashboard() {
                 <td>{row.note}</td>
                 <td>{row.type}</td>
                 <td>{row.amount}</td>
-                <td>soon action</td>
+                <td>
+                  <Button
+                    size="sm"
+                    variant="solid"
+                    color="primary"
+                    sx={{ mx: "2px" }}
+                  >
+                    edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="solid"
+                    color="danger"
+                    sx={{ mx: "2px" }}
+                  >
+                    delete
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>

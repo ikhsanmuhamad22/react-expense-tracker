@@ -1,10 +1,11 @@
 import "./App.css";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import Sidebar from "./components/Sidebar";
 import { Box, CssVarsProvider } from "@mui/joy";
 import { CssBaseline } from "@mui/material";
 import Header from "./components/Header";
+import DashboardAnalitycPage from "./pages/DashboardAnalyticPage";
 
 function App() {
   return (
@@ -31,7 +32,10 @@ function App() {
               color: "text.primary",
             }}
           >
-            <MainPage />
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/analityc" element={<DashboardAnalitycPage />} />
+            </Routes>
           </Box>
         </Box>
       </CssVarsProvider>
