@@ -1,25 +1,9 @@
-// types.ts
-export type CategoryExpense =
-  | "food"
-  | "transportation"
-  | "entertainment"
-  | "utilities"
-  | "shopping"
-  | "health"
-  | "education"
-  | "other";
-
-export type CategoryIncome =
-  | "salary"
-  | "freelance"
-  | "investment"
-  | "gift"
-  | "other";
+import type { CategoryExpense, CategoryIncome } from "../types";
 
 export interface Transaction {
   id: string;
   type: "expense" | "income";
-  category: CategoryExpense | CategoryIncome;
+  category: CategoryExpense | CategoryIncome | undefined;
   amount: number;
   date: string;
   note?: string;

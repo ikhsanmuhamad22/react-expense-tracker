@@ -9,19 +9,35 @@ import Divider from "@mui/joy/Divider";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import FormLabel from "@mui/joy/FormLabel";
-import { categoryExpenses } from "../data/interface/category";
+import { categoryExpenses, categoryIncomes } from "../data/interface/category";
 import Box from "@mui/material/Box";
 import Card from "@mui/joy/Card";
 import Stack from "@mui/joy/Stack";
+import { Typography } from "@mui/joy";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../data/redux/store";
+import { addTransaction } from "../data/redux/transactions/slice";
+import type { Transaction } from "../data/interface/transaction";
+import type { CategoryExpense, CategoryIncome } from "../data/types";
 
 function InputTx() {
-  const [currency, setCurrency] = React.useState("rupiah");
-  const [categroy, setCategory] = React.useState("food");
+  const dispatch = useDispatch<AppDispatch>();
+  const [tab, setTab] = React.useState<"expense" | "income">("expense");
+
+  const [selectedCategory, setSelectedCategory] = React.useState<
+    CategoryExpense | CategoryIncome | undefined
+  >();
+  const [inputNote, setInputNote] = React.useState("");
+  const [inputAmount, setInputAmount] = React.useState("");
 
   return (
     <Box sx={{ width: "38%" }}>
       <Card variant="outlined">
-        <Tabs defaultValue={0} sx={{ bgcolor: "transparent" }}>
+        <Tabs
+          value={tab}
+          onChange={(_, newValue) => setTab(newValue as "expense" | "income")}
+          sx={{ bgcolor: "transparent" }}
+        >
           <TabList
             tabFlex={1}
             size="sm"
@@ -43,10 +59,18 @@ function InputTx() {
               },
             }}
           >
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
+            <Tab
+              sx={{ borderRadius: "6px 6px 0 0" }}
+              indicatorInset
+              value="expense"
+            >
               Expense
             </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={1}>
+            <Tab
+              sx={{ borderRadius: "6px 6px 0 0" }}
+              indicatorInset
+              value="income"
+            >
               Income
             </Tab>
           </TabList>
@@ -54,43 +78,42 @@ function InputTx() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            alert(JSON.stringify(formJson));
+            const data: Transaction = {
+              id: "id" + Date.now(),
+              type: tab,
+              note: inputNote,
+              amount: Number(inputAmount),
+              category: selectedCategory,
+              date: new Date().toISOString(),
+            };
+            dispatch(addTransaction(data));
+            alert(JSON.stringify(data));
           }}
         >
           <Stack spacing={2} sx={{ px: 4, py: 2 }}>
             <Stack spacing={1}>
-              <FormLabel>Your expense</FormLabel>
-              <Input placeholder="buy ferari" required />
+              <FormLabel>
+                Your {tab === "expense" ? "expense" : "Income"}
+              </FormLabel>
+              <Input
+                value={inputNote}
+                onChange={(e) => setInputNote(e.target.value)}
+                placeholder="note"
+                required
+              />
             </Stack>
             <Stack spacing={1}>
               <FormLabel>Amount</FormLabel>
               <Input
                 type="number"
                 placeholder="Amount"
-                startDecorator={{ dollar: "$", rupiah: "Rp" }[currency]}
+                startDecorator={"Rp"}
+                value={inputAmount}
+                onChange={(e) => setInputAmount(e.target.value)}
                 endDecorator={
                   <React.Fragment>
                     <Divider orientation="vertical" />
-                    <Select
-                      variant="plain"
-                      value={currency}
-                      onChange={(_, value) => setCurrency(value!)}
-                      slotProps={{
-                        listbox: {
-                          placement: "bottom-end",
-                          disablePortal: true,
-                        },
-                      }}
-                      sx={{
-                        mr: -1.5,
-                        "&:hover": { bgcolor: "transparent" },
-                      }}
-                    >
-                      <Option value="dollar">US dollar</Option>
-                      <Option value="rupiah">IDR</Option>
-                    </Select>
+                    <Typography pl={1}>IDR</Typography>
                   </React.Fragment>
                 }
               />
@@ -98,20 +121,28 @@ function InputTx() {
             <Stack spacing={1}>
               <FormLabel>Category</FormLabel>
               <Select
-                value={categroy}
+                value={selectedCategory}
                 placeholder="Category"
                 variant="outlined"
                 slotProps={{
                   listbox: {
-                    placement: "bottom-end", // posisi dropdown
-                    disablePortal: true, // supaya tidak nempel ke body, tetap render di container
+                    placement: "bottom-end",
+                    disablePortal: true,
                   },
                 }}
-                onChange={(_, value) => setCategory(value!)}
+                onChange={(_, value) => setSelectedCategory(value!)}
               >
-                {categoryExpenses.map((c) => (
-                  <Option value={c.value}>{c.label}</Option>
-                ))}
+                {tab === "expense"
+                  ? categoryExpenses.map((c) => (
+                      <Option id={c.value} value={c.value}>
+                        {c.label}
+                      </Option>
+                    ))
+                  : categoryIncomes.map((c) => (
+                      <Option id={c.value} value={c.value}>
+                        {c.label}
+                      </Option>
+                    ))}
               </Select>
             </Stack>
             <Button type="submit">Submit</Button>

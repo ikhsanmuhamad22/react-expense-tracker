@@ -3,10 +3,14 @@ import Card from "@mui/joy/Card";
 import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabList from "@mui/joy/TabList";
 import Tabs from "@mui/joy/Tabs";
-import { dummyTransactions } from "../data/dummy/dummy_tx";
 import { Button, Stack, Table, Typography } from "@mui/joy";
+import { useSelector } from "react-redux";
+import type { RootState } from "../data/redux/store";
 
 function MainDashboard() {
+  const transactions = useSelector(
+    (state: RootState) => state.transactions.list
+  );
   return (
     <Box sx={{ width: "60%" }}>
       <Card variant="outlined">
@@ -69,7 +73,7 @@ function MainDashboard() {
             </tr>
           </thead>
           <tbody>
-            {dummyTransactions.map((row) => (
+            {transactions.map((row) => (
               <tr key={row.id}>
                 <td>{row.note}</td>
                 <td>{row.type}</td>

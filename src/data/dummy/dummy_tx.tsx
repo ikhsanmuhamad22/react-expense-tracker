@@ -1,5 +1,3 @@
-// dummyData.ts
-
 import type { Transaction } from "../interface/transaction";
 
 export const dummyTransactions: Transaction[] = [
