@@ -4,17 +4,36 @@ import Tab, { tabClasses } from "@mui/joy/Tab";
 import TabList from "@mui/joy/TabList";
 import Tabs from "@mui/joy/Tabs";
 import { Button, Stack, Table, Typography } from "@mui/joy";
-import { useSelector } from "react-redux";
-import type { RootState } from "../data/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { formatRupiah } from "../utils/currency";
+
+import {
+  selectTransactionsThisMonth,
+  selectTransactionsThisWeek,
+  selectTransactionsToday,
+} from "../data/redux/transactions/reducer";
+import React from "react";
+import type { AppDispatch } from "../data/redux/store";
+import { removeTransaction } from "../data/redux/transactions/slice";
 
 function MainDashboard() {
-  const transactions = useSelector(
-    (state: RootState) => state.transactions.list
-  );
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [tab, setTab] = React.useState<"day" | "week" | "month">("day");
+  const dayTx = useSelector(selectTransactionsToday);
+  const weekTx = useSelector(selectTransactionsThisWeek);
+  const monthTx = useSelector(selectTransactionsThisMonth);
+
+  const tx = tab === "day" ? dayTx : tab === "week" ? weekTx : monthTx;
+
   return (
     <Box sx={{ width: "60%" }}>
       <Card variant="outlined">
-        <Tabs defaultValue={0} sx={{ bgcolor: "transparent" }}>
+        <Tabs
+          defaultValue={"day"}
+          sx={{ bgcolor: "transparent" }}
+          onChange={(_, v) => setTab(v as "day" | "week" | "month")}
+        >
           <TabList
             tabFlex={1}
             size="sm"
@@ -36,13 +55,25 @@ function MainDashboard() {
               },
             }}
           >
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={0}>
+            <Tab
+              sx={{ borderRadius: "6px 6px 0 0" }}
+              indicatorInset
+              value={"day"}
+            >
               Daily
             </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={1}>
+            <Tab
+              sx={{ borderRadius: "6px 6px 0 0" }}
+              indicatorInset
+              value={"week"}
+            >
               Weekly
             </Tab>
-            <Tab sx={{ borderRadius: "6px 6px 0 0" }} indicatorInset value={2}>
+            <Tab
+              sx={{ borderRadius: "6px 6px 0 0" }}
+              indicatorInset
+              value={"month"}
+            >
               Monthly
             </Tab>
           </TabList>
@@ -50,15 +81,17 @@ function MainDashboard() {
         <Stack direction={"row"} sx={{ justifyContent: "space-between" }}>
           <Card sx={{ width: "30%", alignItems: "center" }} variant="outlined">
             <Typography level="title-md">Income</Typography>
-            <Typography level="body-lg">Rp 5.000.000</Typography>
+            <Typography level="body-lg">{formatRupiah(tx.income)}</Typography>
           </Card>
           <Card sx={{ width: "30%", alignItems: "center" }} variant="outlined">
             <Typography level="title-md">Expenses</Typography>
-            <Typography level="body-lg">Rp 5.000.000</Typography>
+            <Typography level="body-lg">{formatRupiah(tx.expense)}</Typography>
           </Card>
           <Card sx={{ width: "30%", alignItems: "center" }} variant="outlined">
             <Typography level="title-md">Balance</Typography>
-            <Typography level="body-lg">Rp 5.000.000</Typography>
+            <Typography level="body-lg">
+              {formatRupiah(tx.totalBalance)}
+            </Typography>
           </Card>
         </Stack>
       </Card>
@@ -73,31 +106,35 @@ function MainDashboard() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((row) => (
-              <tr key={row.id}>
-                <td>{row.note}</td>
-                <td>{row.type}</td>
-                <td>{row.amount}</td>
-                <td>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    color="primary"
-                    sx={{ mx: "2px" }}
-                  >
-                    edit
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="solid"
-                    color="danger"
-                    sx={{ mx: "2px" }}
-                  >
-                    delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {tx.transaction
+              .slice()
+              .reverse()
+              .map((row) => (
+                <tr key={row.id}>
+                  <td>{row.note}</td>
+                  <td>{row.type}</td>
+                  <td>{formatRupiah(row.amount)}</td>
+                  <td>
+                    <Button
+                      size="sm"
+                      variant="solid"
+                      color="primary"
+                      sx={{ mx: "2px" }}
+                    >
+                      edit
+                    </Button>
+                    <Button
+                      onClick={() => dispatch(removeTransaction(row.id))}
+                      size="sm"
+                      variant="solid"
+                      color="danger"
+                      sx={{ mx: "2px" }}
+                    >
+                      delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </Card>

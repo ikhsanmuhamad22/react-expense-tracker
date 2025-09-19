@@ -22,7 +22,7 @@ export const dummyTransactions: Transaction[] = [
     type: "income",
     category: "salary",
     amount: 5000000,
-    date: "2025-09-01T08:00:00.000Z",
+    date: "2025-09-18T08:00:00.000Z",
     note: "Monthly salary",
   },
   {
@@ -38,7 +38,7 @@ export const dummyTransactions: Transaction[] = [
     type: "expense",
     category: "shopping",
     amount: 300000,
-    date: "2025-09-07T18:20:00.000Z",
+    date: "2025-10-07T18:20:00.000Z",
     note: "New shoes",
   },
   {

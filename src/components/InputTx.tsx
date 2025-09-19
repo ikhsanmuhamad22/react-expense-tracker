@@ -13,7 +13,7 @@ import { categoryExpenses, categoryIncomes } from "../data/interface/category";
 import Box from "@mui/material/Box";
 import Card from "@mui/joy/Card";
 import Stack from "@mui/joy/Stack";
-import { Typography } from "@mui/joy";
+import { Alert, Typography } from "@mui/joy";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../data/redux/store";
 import { addTransaction } from "../data/redux/transactions/slice";
@@ -23,10 +23,11 @@ import type { CategoryExpense, CategoryIncome } from "../data/types";
 function InputTx() {
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = React.useState<"expense" | "income">("expense");
+  const [showAlert, setShowAlert] = React.useState(false);
 
   const [selectedCategory, setSelectedCategory] = React.useState<
     CategoryExpense | CategoryIncome | undefined
-  >();
+  >("food");
   const [inputNote, setInputNote] = React.useState("");
   const [inputAmount, setInputAmount] = React.useState("");
 
@@ -75,6 +76,11 @@ function InputTx() {
             </Tab>
           </TabList>
         </Tabs>
+        {showAlert && (
+          <Alert sx={{ px: 3 }} color="success" size="md" variant="soft">
+            Success to input
+          </Alert>
+        )}
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -86,8 +92,9 @@ function InputTx() {
               category: selectedCategory,
               date: new Date().toISOString(),
             };
+            setShowAlert(true);
             dispatch(addTransaction(data));
-            alert(JSON.stringify(data));
+            setTimeout(() => setShowAlert(false), 2000);
           }}
         >
           <Stack spacing={2} sx={{ px: 4, py: 2 }}>
