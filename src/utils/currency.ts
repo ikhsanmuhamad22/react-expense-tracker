@@ -16,7 +16,6 @@ export function formatRupiah(
     maximumFractionDigits = 0,
   } = options ?? {};
 
-  // normalisasi input string -> number (hilangkan karakter non-digit kecuali . dan -)
   const num =
     typeof value === "string" ? Number(value.replace(/[^\d.-]/g, "")) : value;
 

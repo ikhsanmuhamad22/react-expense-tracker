@@ -1,14 +1,4 @@
-import {
-  Box,
-  Breadcrumbs,
-  Card,
-  Link,
-  Tab,
-  tabClasses,
-  TabList,
-  Tabs,
-  Typography,
-} from "@mui/joy";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import Analitycs from "../components/Analitycs";
@@ -48,56 +38,8 @@ function DashboardAnalitycPage() {
             Analitycs.
           </Typography>
 
-          <Card variant="plain">
-            <Tabs defaultValue={0} sx={{ bgcolor: "transparent" }}>
-              <TabList
-                tabFlex={1}
-                size="sm"
-                sx={{
-                  pl: { xs: 0, md: 4 },
-                  justifyContent: "space-around",
-                  [`&& .${tabClasses.root}`]: {
-                    fontWeight: "600",
-                    flex: "initial",
-                    color: "text.tertiary",
-                    [`&.${tabClasses.selected}`]: {
-                      bgcolor: "transparent",
-                      color: "text.primary",
-                      "&::after": {
-                        height: "2px",
-                        bgcolor: "primary.500",
-                      },
-                    },
-                  },
-                }}
-              >
-                <Tab
-                  sx={{ borderRadius: "6px 6px 0 0" }}
-                  indicatorInset
-                  value={0}
-                >
-                  Weekly
-                </Tab>
-                <Tab
-                  sx={{ borderRadius: "6px 6px 0 0" }}
-                  indicatorInset
-                  value={1}
-                >
-                  Monthly
-                </Tab>
-                <Tab
-                  sx={{ borderRadius: "6px 6px 0 0" }}
-                  indicatorInset
-                  value={2}
-                >
-                  Yearly
-                </Tab>
-              </TabList>
-            </Tabs>
-
-            <Analitycs />
-            <AnalitycCategory />
-          </Card>
+          <Analitycs />
+          <AnalitycCategory />
         </Box>
       </Box>
     </Box>

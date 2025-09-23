@@ -106,35 +106,39 @@ function MainDashboard() {
             </tr>
           </thead>
           <tbody>
-            {tx.transaction
-              .slice()
-              .reverse()
-              .map((row) => (
-                <tr key={row.id}>
-                  <td>{row.note}</td>
-                  <td>{row.type}</td>
-                  <td>{formatRupiah(row.amount)}</td>
-                  <td>
-                    <Button
-                      size="sm"
-                      variant="solid"
-                      color="primary"
-                      sx={{ mx: "2px" }}
-                    >
-                      edit
-                    </Button>
-                    <Button
-                      onClick={() => dispatch(removeTransaction(row.id))}
-                      size="sm"
-                      variant="solid"
-                      color="danger"
-                      sx={{ mx: "2px" }}
-                    >
-                      delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+            {tx.transaction.length === 0 ? (
+              <td>no tx</td>
+            ) : (
+              tx.transaction
+                .slice()
+                .reverse()
+                .map((row) => (
+                  <tr key={row.id}>
+                    <td>{row.note}</td>
+                    <td>{row.type}</td>
+                    <td>{formatRupiah(row.amount)}</td>
+                    <td>
+                      <Button
+                        size="sm"
+                        variant="solid"
+                        color="primary"
+                        sx={{ mx: "2px" }}
+                      >
+                        edit
+                      </Button>
+                      <Button
+                        onClick={() => dispatch(removeTransaction(row.id))}
+                        size="sm"
+                        variant="solid"
+                        color="danger"
+                        sx={{ mx: "2px" }}
+                      >
+                        delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+            )}
           </tbody>
         </Table>
       </Card>

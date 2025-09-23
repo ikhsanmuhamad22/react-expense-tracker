@@ -8,3 +8,9 @@ export interface Transaction {
   date: string;
   note?: string;
 }
+
+export interface ChartState {
+  labels: string[];
+  incomeData: number[];
+  expenseData: number[];
+}

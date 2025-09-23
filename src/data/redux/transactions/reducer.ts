@@ -115,3 +115,31 @@ export const selectTransactionsThisMonth = createSelector(
     };
   }
 );
+
+export const selectTransactionsThisYear = createSelector(
+  [selectAllTransactions],
+  (transaction) => {
+    const today = new Date();
+    const tx = transaction.filter((tx) => {
+      const d = new Date(tx.date);
+      return d.getFullYear() === today.getFullYear();
+    });
+
+    const expense: number = tx
+      .filter((t) => t.type === "expense")
+      .reduce((acc, cur) => acc + cur.amount, 0);
+
+    const income: number = tx
+      .filter((t) => t.type === "income")
+      .reduce((acc, cur) => acc + cur.amount, 0);
+
+    const totalBalance: number = income - expense;
+
+    return {
+      transaction: tx,
+      expense: expense,
+      income: income,
+      totalBalance: totalBalance,
+    };
+  }
+);
