@@ -89,9 +89,12 @@ function InputTx() {
               type: tab,
               note: inputNote,
               amount: Number(inputAmount),
-              category: selectedCategory,
+              category: selectedCategory || "other",
               date: new Date().toISOString(),
             };
+            setInputNote("");
+            setInputAmount("");
+
             setShowAlert(true);
             dispatch(addTransaction(data));
             setTimeout(() => setShowAlert(false), 2000);

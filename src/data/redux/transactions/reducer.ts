@@ -143,3 +143,29 @@ export const selectTransactionsThisYear = createSelector(
     };
   }
 );
+
+export const selectCategoryAnalytic = createSelector(
+  [selectAllTransactions],
+  (transactions: Transaction[]) => {
+    const txExpense = transactions.filter((tx) => tx.type === "expense");
+
+    const totalExpense = txExpense.reduce((acc, cur) => acc + cur.amount, 0);
+
+    const summaryMap: Record<string, number> = {};
+    txExpense.forEach((tx) => {
+      summaryMap[tx.category] = (summaryMap[tx.category] || 0) + tx.amount;
+    });
+
+    const summaryArray = Object.entries(summaryMap).map(([category, total]) => {
+      const totalPercent =
+        totalExpense > 0 ? ((total / totalExpense) * 100).toFixed(2) : "0";
+      return {
+        category,
+        total,
+        totalPercent: parseFloat(totalPercent), // number (contoh: 30.45)
+      };
+    });
+
+    return summaryArray.sort((a, b) => b.total - a.total);
+  }
+);

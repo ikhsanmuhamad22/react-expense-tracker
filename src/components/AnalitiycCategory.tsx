@@ -1,13 +1,7 @@
 import { Box, Card, Stack, Table, Typography } from "@mui/joy";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts";
-import { categoryExpenses } from "../data/interface/category";
-
-const data = [
-  { label: "Group A", value: 400, color: "#0088FE" },
-  { label: "Group B", value: 300, color: "#00C49F" },
-  { label: "Group C", value: 300, color: "#FFBB28" },
-  { label: "Group D", value: 200, color: "#FF8042" },
-];
+import { useSelector } from "react-redux";
+import { selectCategoryAnalytic } from "../data/redux/transactions/reducer";
 
 const sizing = {
   margin: { right: 5 },
@@ -15,14 +9,23 @@ const sizing = {
   height: 200,
   hideLegend: true,
 };
-const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
 
-const getArcLabel = (params: { value: number }) => {
-  const percent = params.value / TOTAL;
-  return `${(percent * 100).toFixed(0)}%`;
-};
+const getRandomColor = () =>
+  `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 
 function AnalitycCategory() {
+  const analityc = useSelector(selectCategoryAnalytic);
+
+  const data = analityc.map((a) => {
+    return { label: a.category, value: a.total, color: getRandomColor() };
+  });
+
+  const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
+
+  const getArcLabel = (params: { value: number }) => {
+    const percent = params.value / TOTAL;
+    return `${(percent * 100).toFixed(0)}%`;
+  };
   return (
     <>
       <Typography level="body-lg" component="h1" sx={{ mt: 3, ml: 2 }}>
@@ -58,11 +61,11 @@ function AnalitycCategory() {
                 </tr>
               </thead>
               <tbody>
-                {categoryExpenses.map((row) => (
-                  <tr key={row.value}>
-                    <td>{row.label}</td>
-                    <td>36000</td>
-                    <td>20%</td>
+                {analityc.map((row) => (
+                  <tr key={row.category}>
+                    <td>{row.category}</td>
+                    <td>{row.total}</td>
+                    <td>{row.totalPercent} %</td>
                   </tr>
                 ))}
               </tbody>
