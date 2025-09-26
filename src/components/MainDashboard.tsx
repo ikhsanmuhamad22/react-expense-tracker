@@ -124,13 +124,15 @@ function MainDashboard() {
             </thead>
             <tbody>
               {tx.transaction.length === 0 ? (
-                <td>no tx</td>
+                <tr>
+                  <td>no tx</td>
+                </tr>
               ) : (
                 tx.transaction
                   .slice()
                   .reverse()
                   .map((row) => (
-                    <tr key={row.id}>
+                    <tr key={row.amount}>
                       <td>{row.note}</td>
                       <td>{row.type}</td>
                       <td>{formatRupiah(row.amount)}</td>

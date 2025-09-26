@@ -144,12 +144,12 @@ function InputTx() {
               >
                 {tab === "expense"
                   ? categoryExpenses.map((c) => (
-                      <Option id={c.value} value={c.value}>
+                      <Option key={c.id} id={c.label} value={c.value}>
                         {c.label}
                       </Option>
                     ))
                   : categoryIncomes.map((c) => (
-                      <Option id={c.value} value={c.value}>
+                      <Option key={c.id} id={c.label} value={c.value}>
                         {c.label}
                       </Option>
                     ))}
